@@ -13,6 +13,7 @@ import pystray
 class AltDragTool:
     def __init__(self):
         self.alt_pressed = False
+        self.ctrl_pressed = False
         self.dragging = False
         self.resizing = False
         self.target_hwnd = None
@@ -32,10 +33,21 @@ class AltDragTool:
     def on_key_press(self, key):
         if key in [keyboard.Key.alt, keyboard.Key.alt_l, keyboard.Key.alt_r]:
             self.alt_pressed = True
+        elif key in [keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]:
+            self.ctrl_pressed = True
+        elif hasattr(key, 'char') and key.char == 'q':
+            if self.alt_pressed and self.ctrl_pressed:
+                hwnd = self.get_window_under_mouse()
+                if hwnd:
+                    class_name = win32gui.GetClassName(hwnd)
+                    if class_name not in ["Shell_TrayWnd", "WorkerW", "Progman"]:
+                        win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
 
     def on_key_release(self, key):
         if key in [keyboard.Key.alt, keyboard.Key.alt_l, keyboard.Key.alt_r]:
             self.alt_pressed = False
+        elif key in [keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]:
+            self.ctrl_pressed = False
 
     def on_click(self, x, y, button, pressed):
         if self.alt_pressed and pressed:
@@ -100,7 +112,8 @@ class AltDragTool:
         messagebox.showinfo("Alt-Drag Tool Instructions", 
             "Alt-Drag Tool is running!\n\n"
             "• Hold ALT + Left Click to MOVE windows.\n"
-            "• Hold ALT + Right Click to RESIZE windows.\n\n"
+            "• Hold ALT + Right Click to RESIZE windows.\n"
+            "• Press CTRL + ALT + Q to CLOSE the window under your mouse.\n\n"
             "The tool is now in your system tray.")
         root.destroy()
 
