@@ -1,6 +1,6 @@
 # Alt-Drag & Resize Tool for Windows
 
-This tool brings a popular Linux window management feature to Windows. It allows you to move and resize windows without having to find the title bar or corners.
+It's the feature from Linux Mint Cinnamon. AI summary of AI made tool (of course at my direction as far as I can direct it fwiw) follows - This tool brings a popular Linux window management feature to Windows. It allows you to move and resize windows without having to find the title bar or corners.
 
 ## How to use:
 
